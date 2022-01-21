@@ -1,0 +1,2 @@
+Notepad.exe
+firefox.exe
