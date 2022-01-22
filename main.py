@@ -14,6 +14,7 @@ with console.status("[bold green]Loading...") as status:
         from nsp import *
     except ModuleNotFoundError:
         import subprocess
+
         console.log("[*] INSTALLING colorama, pyfiglet, pywin32, psutil and pymem with pip3")
         subprocess.call('pip3 install colorama pyfiglet pywin32 psutil pymem', shell=True)
         print("[i] Please Restart")
@@ -28,6 +29,7 @@ with console.status("[bold green]Loading...") as status:
             subprocess.call("cls", shell=True)
         else:
             os.system('clear')
+
 
     def ini():
         print(Fore.GREEN, flag, Style.RESET_ALL)
@@ -50,9 +52,9 @@ with console.status("[bold green]Loading...") as status:
         elif cmd == "2":
             for proc in psutil.process_iter():
                 try:
-                    processName = proc.name()
+                    processname = proc.name()
                     processID = proc.pid
-                    print(processName, ' ::: ', processID)
+                    print(processname, ' ::: ', processID)
                 except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                     pass
             input("press enter")
@@ -70,18 +72,17 @@ with console.status("[bold green]Loading...") as status:
                 console = Console()
                 tasks = [f"task {count}/{countl}"]
 
-                with console.status("[bold green]Working on tasks...") as status:
+                with console.status("[bold green]Working on tasks..."):
                     while tasks:
                         task = tasks.pop(0)
                         for proc in psutil.process_iter():
                             processName = proc.name()
-                            processID = proc.pid
                             try:
                                 if processName == line:
                                     console.log(f"{task} {processName} FOUND")
                                     return processName
                                 else:
-                                    console.log(f"{task} {processName} Not Found")
+                                    pass
                             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                                 pass
 
@@ -102,10 +103,13 @@ with console.status("[bold green]Loading...") as status:
                 line = line.rstrip('\n')
                 count = count + 1
                 e = check(line)
-                if e == 0:
-                    pass
+                if e != 0:
+                    if e is None:
+                        console.log(f"{count}/{countl} {line} NOT FOUND")
+                    else:
+                        kill_by_win_taskkill(e)
                 else:
-                    kill_by_win_taskkill(e)
+                    pass
             print(f"{Fore.CYAN}[+]{Style.RESET_ALL} Complete")
             input("press enter")
 
