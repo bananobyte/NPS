@@ -35,13 +35,23 @@ if detectSandboxie() == True:
     exit()
 
 if __name__ == '__main__':
-    f = open(r'data\activate.sys', 'r')
+    try:
+        f = open(r'data\activate.sys', 'r')
+    except FileNotFoundError:
+        try:
+            f = open(r'activate.sys', 'r')
+        except FileNotFoundError:
+            exit(-1)
     foo = f.read()
     f.close()
     if foo == "True":
         pass
     else:
         exit()
-    with open(r'data\blacklist.txt') as f:
-        lines = f.readlines()
+    try:
+        with open(r'data\blacklist.txt') as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        with open(r'blacklist.txt') as f:
+            lines = f.readlines()
     main()
